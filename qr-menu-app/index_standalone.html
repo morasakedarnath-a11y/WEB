@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+  <title>Bacchus Restro Bar | Mobile QR Ordering</title>
+  <meta name="description" content="Instant Table Ordering & Digital QR Menu for Bacchus Restro Bar, Manipal." />
+  
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="theme-color" content="#0A0E17" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+  <style>
+    :root {
+      --bg-dark: #0A0E17;
+      --bg-card: #131B2E;
+      --surface: #1E293B;
+      --primary: #F59E0B;
+      --accent-green: #10B981;
+      --accent-red: #EF4444;
+      --text-main: #F8FAFC;
+      --text-muted: #94A3B8;
+      --border: rgba(255, 255, 255, 0.1);
+      --radius-sm: 8px;
+      --radius-md: 14px;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Outfit', 'Inter', sans-serif; }
+    body { background-color: var(--bg-dark); color: var(--text-main); min-height: 100vh; padding-bottom: 90px; }
+    .container { max-width: 1200px; margin: 0 auto; padding: 16px; }
+
+    .app-header { background: rgba(19, 27, 46, 0.9); backdrop-filter: blur(12px); border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 100; padding: 12px 16px; }
+    .header-container { max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; }
+    .brand-title { display: flex; align-items: center; gap: 10px; }
+    .brand-icon { font-size: 1.6rem; background: rgba(245, 158, 11, 0.15); width: 42px; height: 42px; border-radius: var(--radius-sm); display: flex; align-items: center; justify-content: center; border: 1px solid var(--primary); }
+    .brand-name { font-weight: 800; font-size: 1.15rem; }
+
+    .view-nav { display: flex; gap: 8px; }
+    .view-btn { background: rgba(255, 255, 255, 0.05); border: 1px solid var(--border); color: var(--text-main); padding: 8px 14px; border-radius: var(--radius-sm); font-size: 0.85rem; font-weight: 600; cursor: pointer; }
+    .view-btn.active { background: var(--primary); color: #000; border-color: var(--primary); }
+
+    .table-badge { background: rgba(245, 158, 11, 0.15); border: 1px solid var(--primary); color: var(--primary); font-weight: 700; font-size: 0.8rem; padding: 6px 12px; border-radius: 20px; }
+    .btn-icon { background: rgba(255, 255, 255, 0.05); border: 1px solid var(--border); color: var(--text-main); width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; position: relative; }
+    .badge-count { position: absolute; top: -4px; right: -4px; background: var(--accent-red); color: #fff; font-size: 0.7rem; font-weight: 800; width: 18px; height: 18px; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+
+    .fssai-icon { width: 16px; height: 16px; border-radius: 2px; display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .fssai-icon.veg { border: 2px solid var(--accent-green); }
+    .fssai-icon.veg::after { content: ''; width: 8px; height: 8px; border-radius: 50%; background: var(--accent-green); }
+    .fssai-icon.non-veg { border: 2px solid var(--accent-red); }
+    .fssai-icon.non-veg::after { content: ''; width: 0; height: 0; border-left: 5px solid transparent; border-right: 5px solid transparent; border-bottom: 8px solid var(--accent-red); }
+
+    .hero-banner { background: linear-gradient(135deg, rgba(245, 158, 11, 0.15), rgba(236, 72, 153, 0.15)), var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 20px; margin-bottom: 20px; }
+    .search-box { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 10px 14px; display: flex; align-items: center; gap: 10px; margin-top: 14px; }
+    .search-input { background: transparent; border: none; color: #fff; width: 100%; font-size: 0.95rem; outline: none; }
+
+    .menu-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px; }
+    .menu-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-md); overflow: hidden; display: flex; flex-direction: column; }
+    .card-img-wrap { height: 160px; position: relative; }
+    .card-img { width: 100%; height: 100%; object-fit: cover; }
+    .card-content { padding: 14px; display: flex; flex-direction: column; flex: 1; }
+    .card-header { display: flex; align-items: flex-start; gap: 8px; }
+    .card-title { font-size: 1rem; font-weight: 700; }
+    .card-desc { font-size: 0.8rem; color: var(--text-muted); margin-top: 6px; flex: 1; }
+    .card-footer { margin-top: 14px; display: flex; justify-content: space-between; align-items: center; }
+    .price-text { font-size: 1.15rem; font-weight: 800; color: var(--primary); }
+    .btn-add { background: rgba(245, 158, 11, 0.15); border: 1px solid var(--primary); color: var(--primary); padding: 6px 14px; border-radius: var(--radius-sm); font-size: 0.85rem; font-weight: 700; cursor: pointer; }
+
+    .mobile-floating-cart { position: fixed; bottom: 20px; left: 16px; right: 16px; background: linear-gradient(135deg, var(--primary), #D97706); color: #000; font-weight: 800; padding: 14px 20px; border-radius: var(--radius-md); display: flex; justify-content: space-between; align-items: center; box-shadow: 0 10px 25px rgba(245, 158, 11, 0.4); z-index: 90; cursor: pointer; }
+
+    .modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0, 0, 0, 0.8); backdrop-filter: blur(8px); z-index: 200; display: flex; align-items: center; justify-content: center; padding: 16px; }
+    .modal-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-md); width: 100%; max-width: 480px; overflow: hidden; position: relative; }
+    .modal-close { position: absolute; top: 14px; right: 14px; background: rgba(0, 0, 0, 0.5); color: #fff; border: none; width: 32px; height: 32px; border-radius: 50%; font-size: 1rem; cursor: pointer; }
+
+    .kds-board { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; }
+    .kds-column { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 16px; }
+    .ticket-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 12px; margin-bottom: 12px; }
+    .btn-checkout { width: 100%; background: linear-gradient(135deg, var(--primary), #D97706); color: #000; font-weight: 800; padding: 14px; border: none; border-radius: var(--radius-md); font-size: 1rem; cursor: pointer; }
+    .form-input, .form-select { width: 100%; background: var(--surface); border: 1px solid var(--border); color: #fff; padding: 10px 14px; border-radius: var(--radius-sm); font-size: 0.9rem; outline: none; }
+  </style>
+</head>
+<body>
+  <div id="app"></div>
+
+  <script>
+    const initialMenu = [
+      { id: 'm1', name: 'Mangalorean Chicken Ghee Roast', price: 340, isVeg: false, description: 'Tender chicken in Byadgi chili paste & pure ghee.', image: 'https://images.unsplash.com/photo-1603894584373-5ac82b2ae398?auto=format&fit=crop&w=600&q=80' },
+      { id: 'm2', name: 'Paneer Ghee Roast', price: 290, isVeg: true, description: 'Fresh paneer tossed in Kundapura ghee roast spices.', image: 'https://images.unsplash.com/photo-1567188040759-fb8a883dc6d8?auto=format&fit=crop&w=600&q=80' },
+      { id: 'm3', name: 'Anjal Tawa Fry (King Fish)', price: 420, isVeg: false, description: 'King Fish slice tawa fried in coast red masala.', image: 'https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?auto=format&fit=crop&w=600&q=80' },
+      { id: 'm4', name: 'Draught Beer Pitcher (1.5L)', price: 650, isVeg: true, description: 'Chilled draught beer pitcher.', image: 'https://images.unsplash.com/photo-1535958636474-b021ee887b13?auto=format&fit=crop&w=600&q=80' }
+    ];
+
+    const initialTables = [
+      { id: 1, name: 'Table 01 - Main Lounge' },
+      { id: 2, name: 'Table 02 - Rooftop Garden' }
+    ];
+
+    const urlParams = new URLSearchParams(window.location.search);
+    const paramTableId = parseInt(urlParams.get('table')) || 1;
+    let rawMode = urlParams.get('mode') || 'customer';
+    if (rawMode === 'staff' || rawMode === 'kds') rawMode = 'kitchen';
+
+    let state = {
+      mode: rawMode,
+      activeView: rawMode === 'admin' ? 'admin' : (rawMode === 'waiter' ? 'waiter' : (rawMode === 'kitchen' ? 'kds' : 'menu')),
+      currentTable: initialTables.find(t => t.id === paramTableId) || initialTables[0],
+      menu: initialMenu,
+      cart: [],
+      orders: [],
+      isCartOpen: false,
+      isStaffPinModalOpen: false,
+      selectedItem: null
+    };
+
+    function renderApp() {
+      const app = document.getElementById('app');
+      if (!app) return;
+
+      const cartCount = state.cart.reduce((s, i) => s + i.qty, 0);
+      const cartSubtotal = state.cart.reduce((s, i) => s + (i.price * i.qty), 0);
+
+      app.innerHTML = `
+        <header class="app-header">
+          <div class="header-container">
+            <div class="brand-title">
+              <div class="brand-icon">🍹</div>
+              <div>
+                <div class="brand-name">Bacchus Restro Bar</div>
+                <div style="font-size:0.75rem; color:var(--text-muted);">Manipal, Karnataka</div>
+              </div>
+            </div>
+
+            ${state.mode === 'customer' ? `<button class="view-btn" id="btn-open-staff-modal">🔐 Staff Access</button>` : ''}
+            ${state.mode === 'admin' ? `
+              <nav class="view-nav">
+                <button class="view-btn ${state.activeView === 'admin' ? 'active' : ''}" data-view="admin">📊 Admin</button>
+                <button class="view-btn ${state.activeView === 'kds' ? 'active' : ''}" data-view="kds">👨‍🍳 Kitchen</button>
+                <button class="view-btn ${state.activeView === 'waiter' ? 'active' : ''}" data-view="waiter">🏃 Waiters</button>
+              </nav>
+            ` : ''}
+
+            <div style="display:flex; align-items:center; gap:10px;">
+              <div class="table-badge">📍 ${state.currentTable.name.split('-')[0]}</div>
+              <button class="btn-icon" id="btn-open-cart">🛒 ${cartCount > 0 ? `<span class="badge-count">${cartCount}</span>` : ''}</button>
+            </div>
+          </div>
+        </header>
+
+        <main class="container">
+          ${state.mode === 'customer' ? renderCustomerView() : ''}
+          ${state.mode === 'kitchen' ? renderKDSView() : ''}
+          ${state.mode === 'waiter' ? renderWaiterView() : ''}
+          ${state.mode === 'admin' && state.activeView === 'admin' ? renderAdminView() : ''}
+          ${state.mode === 'admin' && state.activeView === 'kds' ? renderKDSView() : ''}
+          ${state.mode === 'admin' && state.activeView === 'waiter' ? renderWaiterView() : ''}
+        </main>
+
+        ${state.mode === 'customer' && cartCount > 0 ? `
+          <div class="mobile-floating-cart" id="btn-open-cart-floating">
+            <div>🛒 ${cartCount} ITEMS (₹${cartSubtotal})</div>
+            <div>VIEW CART ➔</div>
+          </div>
+        ` : ''}
+
+        ${state.isCartOpen ? renderCartDrawer() : ''}
+        ${state.selectedItem ? renderItemModal(state.selectedItem) : ''}
+        ${state.isStaffPinModalOpen ? renderStaffPinModal() : ''}
+      `;
+
+      attachEvents();
+    }
+
+    function renderCustomerView() {
+      return `
+        <div class="hero-banner">
+          <h2 style="font-size:1.4rem; font-weight:800;">Welcome to Bacchus Restro Bar! 👋</h2>
+          <p style="color:var(--text-muted); font-size:0.85rem; margin-top:2px;">Ordering from <strong>${state.currentTable.name}</strong></p>
+        </div>
+
+        <div class="menu-grid">
+          ${state.menu.map(item => `
+            <div class="menu-card">
+              <div class="card-img-wrap"><img src="${item.image}" class="card-img" /></div>
+              <div class="card-content">
+                <div class="card-header"><span class="fssai-icon ${item.isVeg ? 'veg' : 'non-veg'}"></span><h3 class="card-title">${item.name}</h3></div>
+                <p class="card-desc">${item.description}</p>
+                <div class="card-footer">
+                  <span class="price-text">₹${item.price}</span>
+                  <button class="btn-add btn-open-item" data-id="${item.id}">+ ADD</button>
+                </div>
+              </div>
+            </div>
+          `).join('')}
+        </div>
+      `;
+    }
+
+    function renderCartDrawer() {
+      const subtotal = state.cart.reduce((s, i) => s + (i.price * i.qty), 0);
+      const total = subtotal + Math.round(subtotal * 0.05);
+
+      return `
+        <div class="modal-overlay">
+          <div class="modal-card" style="padding:20px;">
+            <button class="modal-close" id="btn-close-cart">✕</button>
+            <h3 style="font-size:1.2rem; font-weight:800; margin-bottom:16px;">🛒 Your Table Cart</h3>
+            ${state.cart.length === 0 ? '<p style="color:var(--text-muted);">Your cart is empty.</p>' : `
+              ${state.cart.map(i => `<div style="display:flex; justify-content:space-between; margin-bottom:8px;"><span>${i.qty}x ${i.name}</span><span>₹${i.price * i.qty}</span></div>`).join('')}
+              <div style="border-top:1px solid var(--border); margin-top:12px; padding-top:10px; font-weight:800; color:var(--primary);">Total Payable: ₹${total}</div>
+              <button class="btn-checkout" id="btn-place-order" style="margin-top:16px;">CONFIRM ORDER ➔</button>
+            `}
+          </div>
+        </div>
+      `;
+    }
+
+    function renderKDSView() {
+      return `
+        <div style="margin-bottom:20px;"><h2>👨‍🍳 Kitchen Display System</h2></div>
+        <div class="kds-board">
+          <div class="kds-column">
+            <h3 style="margin-bottom:12px;">📥 ORDERS (${state.orders.length})</h3>
+            ${state.orders.length === 0 ? '<p style="color:var(--text-muted);">No new orders</p>' : state.orders.map(o => `
+              <div class="ticket-card">
+                <div><strong>Order #${o.id} • ${o.tableName}</strong></div>
+                <div style="margin:6px 0;">${o.items.map(i => `<div>${i.qty}x ${i.name}</div>`).join('')}</div>
+                <div style="color:var(--primary); font-weight:800;">Total: ₹${o.total}</div>
+              </div>
+            `).join('')}
+          </div>
+        </div>
+      `;
+    }
+
+    function renderWaiterView() {
+      return `<div><h2>🏃 Waiters Dispatch Board</h2><p style="color:var(--text-muted);">Food ready to serve will flash here.</p></div>`;
+    }
+
+    function renderAdminView() {
+      const total = state.orders.reduce((s, o) => s + o.total, 0);
+      return `
+        <div>
+          <h2>📊 Manager Admin Command Center</h2>
+          <div style="background:var(--bg-card); padding:20px; border-radius:var(--radius-md); margin-top:16px; font-weight:800; color:var(--primary);">
+            Total Revenue: ₹${total}
+          </div>
+        </div>
+      `;
+    }
+
+    function renderItemModal(item) {
+      return `
+        <div class="modal-overlay">
+          <div class="modal-card" style="padding:20px;">
+            <button class="modal-close" id="btn-close-modal">✕</button>
+            <h3 style="font-size:1.2rem; font-weight:800;">${item.name}</h3>
+            <p style="color:var(--text-muted); margin-top:4px;">${item.description}</p>
+            <button class="btn-checkout" id="btn-confirm-add" style="margin-top:16px;">ADD TO CART • ₹${item.price}</button>
+          </div>
+        </div>
+      `;
+    }
+
+    function renderStaffPinModal() {
+      return `
+        <div class="modal-overlay">
+          <div class="modal-card" style="padding:20px; max-width:360px;">
+            <button class="modal-close" id="btn-close-staff">✕</button>
+            <h3 style="font-size:1.1rem; font-weight:800; margin-bottom:12px;">🔐 Unlock Staff Portal</h3>
+            <select class="form-select" id="staff-role-select" style="margin-bottom:12px;">
+              <option value="kitchen">👨‍🍳 Kitchen Display (KDS)</option>
+              <option value="waiter">🏃 Floor Waiter Dispatch</option>
+              <option value="admin">📊 Manager Admin Dashboard</option>
+            </select>
+            <input type="password" class="form-input" id="staff-pin-input" placeholder="Enter PIN (1234)" style="text-align:center; font-size:1.2rem; margin-bottom:12px;" />
+            <button class="btn-checkout" id="btn-submit-pin">UNLOCK ➔</button>
+          </div>
+        </div>
+      `;
+    }
+
+    function attachEvents() {
+      const btnStaff = document.getElementById('btn-open-staff-modal');
+      if (btnStaff) btnStaff.onclick = () => { state.isStaffPinModalOpen = true; renderApp(); };
+
+      const btnCloseStaff = document.getElementById('btn-close-staff');
+      if (btnCloseStaff) btnCloseStaff.onclick = () => { state.isStaffPinModalOpen = false; renderApp(); };
+
+      const btnSubmitPin = document.getElementById('btn-submit-pin');
+      if (btnSubmitPin) {
+        btnSubmitPin.onclick = () => {
+          const pin = document.getElementById('staff-pin-input')?.value;
+          const role = document.getElementById('staff-role-select')?.value || 'admin';
+          if (pin === '1234') {
+            state.mode = role;
+            state.activeView = role === 'admin' ? 'admin' : (role === 'waiter' ? 'waiter' : 'kds');
+            state.isStaffPinModalOpen = false;
+            renderApp();
+          } else { alert('Invalid PIN! Use 1234'); }
+        };
+      }
+
+      const btnOpenCart = document.getElementById('btn-open-cart');
+      if (btnOpenCart) btnOpenCart.onclick = () => { state.isCartOpen = true; renderApp(); };
+
+      const btnOpenCartFloating = document.getElementById('btn-open-cart-floating');
+      if (btnOpenCartFloating) btnOpenCartFloating.onclick = () => { state.isCartOpen = true; renderApp(); };
+
+      const btnCloseCart = document.getElementById('btn-close-cart');
+      if (btnCloseCart) btnCloseCart.onclick = () => { state.isCartOpen = false; renderApp(); };
+
+      const btnPlaceOrder = document.getElementById('btn-place-order');
+      if (btnPlaceOrder) {
+        btnPlaceOrder.onclick = () => {
+          const subtotal = state.cart.reduce((s, i) => s + (i.price * i.qty), 0);
+          const total = subtotal + Math.round(subtotal * 0.05);
+          state.orders.push({ id: Math.floor(1000 + Math.random() * 9000), tableName: state.currentTable.name, items: [...state.cart], total });
+          state.cart = [];
+          state.isCartOpen = false;
+          alert('🎉 Order Placed Successfully!');
+          renderApp();
+        };
+      }
+
+      document.querySelectorAll('.btn-open-item').forEach(b => {
+        b.onclick = () => {
+          state.selectedItem = state.menu.find(m => m.id === b.dataset.id);
+          renderApp();
+        };
+      });
+
+      const btnCloseModal = document.getElementById('btn-close-modal');
+      if (btnCloseModal) btnCloseModal.onclick = () => { state.selectedItem = null; renderApp(); };
+
+      const btnConfirmAdd = document.getElementById('btn-confirm-add');
+      if (btnConfirmAdd && state.selectedItem) {
+        btnConfirmAdd.onclick = () => {
+          const exist = state.cart.find(c => c.id === state.selectedItem.id);
+          if (exist) { exist.qty++; } else { state.cart.push({ ...state.selectedItem, qty: 1 }); }
+          state.selectedItem = null;
+          renderApp();
+        };
+      }
+
+      document.querySelectorAll('.view-nav .view-btn').forEach(b => {
+        b.onclick = () => { state.activeView = b.dataset.view; renderApp(); };
+      });
+    }
+
+    renderApp();
+  </script>
+</body>
+</html>
