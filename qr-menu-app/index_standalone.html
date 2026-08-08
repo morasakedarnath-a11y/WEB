@@ -474,20 +474,26 @@
             if (msg.type === 'NEW_ORDER' && !state.orders.some(o => o.id === msg.payload.id)) {
               state.orders.push(msg.payload);
               saveState(); renderApp();
-              showToast(`🔔 New Order #${msg.payload.id} placed for ${msg.payload.tableName.split('-')[0]}!`);
+              if (state.mode !== 'customer') {
+                showToast(`🔔 New Order #${msg.payload.id} placed for ${msg.payload.tableName.split('-')[0]}!`);
+              }
             } else if (msg.type === 'UPDATE_ORDER_STATUS') {
               const order = state.orders.find(o => o.id === msg.payload.orderId);
               if (order) {
                 order.status = msg.payload.nextStatus;
                 saveState(); renderApp();
-                showToast(`⚡ Order #${order.id} status: ${order.status}`);
+                if (state.mode !== 'customer' || order.tableId === state.currentTable.id) {
+                  showToast(`⚡ Order #${order.id} status: ${order.status}`);
+                }
               }
             } else if (msg.type === 'SERVICE_REQUEST') {
               const reqData = msg.payload.id ? msg.payload : { id: Date.now(), tableName: msg.payload.tableName, requestType: msg.payload.requestType, status: 'Pending', timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) };
               if (!state.serviceRequests.some(r => r.id === reqData.id)) {
                 state.serviceRequests.unshift(reqData);
                 saveState(); renderApp();
-                showToast(`🔔 Table Call: ${reqData.requestType} for ${reqData.tableName.split('-')[0]}`);
+                if (state.mode !== 'customer') {
+                  showToast(`🔔 Table Call: ${reqData.requestType} for ${reqData.tableName.split('-')[0]}`);
+                }
               }
             } else if (msg.type === 'MENU_STOCK_UPDATE') {
               const item = state.menu.find(m => m.id === msg.payload.itemId);
@@ -527,6 +533,7 @@
     }
 
     function showToast(msg) {
+      if (state && state.mode === 'customer') return; // Silence all popups for customers completely
       let toast = document.getElementById('toast-notification');
       if (!toast) {
         toast = document.createElement('div');
