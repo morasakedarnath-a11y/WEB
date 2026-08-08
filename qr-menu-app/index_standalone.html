@@ -596,9 +596,9 @@
                     ${item.selectedOptions ? `<div style="font-size:0.75rem; color:var(--primary);">${Object.values(item.selectedOptions).join(', ')}</div>` : ''}
                   </div>
                   <div>
-                    <button class="btn-dec-qty" data-id="${item.id}" data-cart-id="${item.cartId || item.id}" style="padding:4px 12px; background:var(--surface); border:1px solid var(--border); color:#fff; font-weight:800; border-radius:6px; cursor:pointer;">-</button>
-                    <span style="margin:0 10px; font-weight:800; font-size:1.05rem; color:#fff;">${item.qty}</span>
-                    <button class="btn-inc-qty" data-id="${item.id}" data-cart-id="${item.cartId || item.id}" style="padding:4px 12px; background:var(--surface); border:1px solid var(--border); color:#fff; font-weight:800; border-radius:6px; cursor:pointer;">+</button>
+                    <button class="btn-dec-qty" data-id="${item.id}" data-cart-id="${item.cartId || item.id}" style="padding:4px 12px; background:var(--surface); border:1px solid var(--border); color:var(--text-main); font-weight:800; border-radius:6px; cursor:pointer;">-</button>
+                    <span style="margin:0 10px; font-weight:800; font-size:1.05rem; color:var(--text-main);">${item.qty}</span>
+                    <button class="btn-inc-qty" data-id="${item.id}" data-cart-id="${item.cartId || item.id}" style="padding:4px 12px; background:var(--surface); border:1px solid var(--border); color:var(--text-main); font-weight:800; border-radius:6px; cursor:pointer;">+</button>
                   </div>
                 </div>
               `).join('')}
@@ -690,7 +690,7 @@
               ${activeRequests.map(req => `
                 <div style="background:var(--bg-card); border:1px solid var(--accent-red); padding:12px; border-radius:var(--radius-sm); display:flex; justify-content:space-between; align-items:center;">
                   <div>
-                    <div style="font-weight:800; font-size:0.95rem; color:#fff;">📍 ${req.tableName}</div>
+                    <div style="font-weight:800; font-size:0.95rem; color:var(--text-main);">📍 ${req.tableName}</div>
                     <div style="color:var(--primary); font-size:0.85rem; font-weight:700;">Needs: ${req.requestType}</div>
                   </div>
                   <button class="btn-add btn-resolve-request" data-req-id="${req.id}" style="padding:6px 12px; background:var(--accent-red); color:#fff; font-size:0.8rem;">
@@ -960,7 +960,7 @@
           <div class="modal-card" style="padding:24px; max-width:400px; text-align:center;">
             <button class="modal-close" id="btn-close-waiter-modal">✕</button>
             <div style="font-size:2.8rem; margin-bottom:6px;">🔔</div>
-            <h3 style="font-size:1.25rem; font-weight:800; color:#fff;">Call Server & Assistance</h3>
+            <h3 style="font-size:1.25rem; font-weight:800; color:var(--text-main);">Call Server & Assistance</h3>
             <p style="color:var(--text-muted); font-size:0.85rem; margin-top:4px; margin-bottom:20px;">
               Tap an option for <strong>${state.currentTable.name}</strong>. A floor waiter will be notified instantly.
             </p>
