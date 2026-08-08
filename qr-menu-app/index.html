@@ -144,89 +144,180 @@
       }
     };
 
-    // --- MANIPAL RESTRO-BAR MENU DATA ---
+    // --- AUTHENTIC HIGH POINT LOUNGE MANIPAL MENU DATA ---
     const initialMenu = [
+      // --- STARTERS & BAR BITES ---
       {
-        id: 'm1',
+        id: 'hp_s1',
+        name: 'Veg Hara Bhara Kabab',
+        category: 'starters',
+        price: 220,
+        isVeg: true,
+        isSpicy: false,
+        isBestSeller: false,
+        description: 'Crispy spinach & green peas tikkis spiked with aromatic Indian spices & mint chutney.',
+        image: 'https://images.unsplash.com/photo-1601050690597-df0568f70950?auto=format&fit=crop&w=600&q=80',
+        rating: 4.7
+      },
+      {
+        id: 'hp_s2',
+        name: 'Paneer Garlic Tikka',
+        category: 'starters',
+        price: 260,
+        isVeg: true,
+        isSpicy: true,
+        isBestSeller: true,
+        description: 'Tandoor-charred cottage cheese cubes infused with roasted garlic & yellow chilli marinade.',
+        image: 'https://images.unsplash.com/photo-1567188040759-fb8a883dc6d8?auto=format&fit=crop&w=600&q=80',
+        rating: 4.8
+      },
+      {
+        id: 'hp_s3',
+        name: 'Paneer Schezwan Crisp',
+        category: 'starters',
+        price: 270,
+        isVeg: true,
+        isSpicy: true,
+        isBestSeller: false,
+        description: 'Crunchy fried paneer tossed in fiery red Schezwan pepper sauce & spring onions.',
+        image: 'https://images.unsplash.com/photo-1541832676-9b763b0239ab?auto=format&fit=crop&w=600&q=80',
+        rating: 4.6
+      },
+      {
+        id: 'hp_s4',
+        name: 'Chicken Pepper Dry',
+        category: 'starters',
+        price: 280,
+        isVeg: false,
+        isSpicy: true,
+        isBestSeller: true,
+        description: 'South Indian style succulent chicken morsels fried with crushed Malabar black pepper & curry leaves.',
+        image: 'https://images.unsplash.com/photo-1603894584373-5ac82b2ae398?auto=format&fit=crop&w=600&q=80',
+        rating: 4.9
+      },
+      {
+        id: 'hp_s5',
+        name: 'Tandoori Chicken (Half)',
+        category: 'starters',
+        price: 260,
+        isVeg: false,
+        isSpicy: true,
+        isBestSeller: true,
+        description: 'Classic clay-oven roasted chicken marinated overnight in Kashmiri chilli yogurt marinade.',
+        image: 'https://images.unsplash.com/photo-1626777552726-4a6b54c97e46?auto=format&fit=crop&w=600&q=80',
+        rating: 4.8
+      },
+
+      // --- COASTAL & MANIPAL SPECIALS ---
+      {
+        id: 'hp_c1',
         name: 'Mangalorean Chicken Ghee Roast',
         category: 'coastal',
         price: 340,
         isVeg: false,
         isSpicy: true,
         isBestSeller: true,
-        description: 'Tender chicken marinated in fiery Byadgi chilli paste & slow-cooked in rich pure ghee.',
+        description: 'Signature High Point coastal delight! Chicken braised in fiery Byadgi chilli paste & pure desi ghee.',
         image: 'https://images.unsplash.com/photo-1603894584373-5ac82b2ae398?auto=format&fit=crop&w=600&q=80',
         rating: 4.9,
         options: [{ name: 'Spice Level', choices: ['Authentic Fiery', 'Medium Hot', 'Mild'] }]
       },
       {
-        id: 'm2',
+        id: 'hp_c2',
         name: 'Paneer Ghee Roast',
         category: 'coastal',
         price: 290,
         isVeg: true,
         isSpicy: true,
         isBestSeller: true,
-        description: 'Fresh cottage cheese cubes tossed in aromatic Kundapura spices & dollops of clarified butter.',
+        description: 'Fresh cottage cheese cubes tossed in aromatic Kundapura roasted spices & rich clarified butter.',
         image: 'https://images.unsplash.com/photo-1567188040759-fb8a883dc6d8?auto=format&fit=crop&w=600&q=80',
-        rating: 4.8,
-        options: [{ name: 'Spice Level', choices: ['Medium', 'Fiery Hot'] }]
+        rating: 4.8
       },
       {
-        id: 'm3',
-        name: 'Anjal Tawa Fry (King Fish)',
+        id: 'hp_c3',
+        name: 'Anjal (Seer Fish) Tawa Fry',
         category: 'coastal',
         price: 420,
         isVeg: false,
         isSpicy: true,
-        isBestSeller: false,
-        description: 'Fresh catch King Fish slice coated in semolina & coast-style red masala, tava grilled.',
-        image: 'https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?auto=format&fit=crop&w=600&q=80',
-        rating: 4.7
-      },
-      {
-        id: 'm4',
-        name: 'Butter Garlic Prawns',
-        category: 'coastal',
-        price: 380,
-        isVeg: false,
-        isSpicy: false,
         isBestSeller: true,
-        description: 'Juicy prawns sauteed in rich butter, roasted garlic, cracked black pepper & parsley.',
-        image: 'https://images.unsplash.com/photo-1565680018434-b513d5e5fd47?auto=format&fit=crop&w=600&q=80',
+        description: 'Fresh catch King Fish slice coated in semolina & coastal red masala, tava pan-seared.',
+        image: 'https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?auto=format&fit=crop&w=600&q=80',
         rating: 4.9
       },
+
+      // --- SOUPS & CHINESE ---
       {
-        id: 'b1',
-        name: 'Peri Peri Loaded Cheese Fries',
-        category: 'starters',
-        price: 210,
+        id: 'hp_ch1',
+        name: 'Veg Manchow Soup',
+        category: 'chinese',
+        price: 140,
         isVeg: true,
         isSpicy: true,
-        isBestSeller: true,
-        description: 'Crispy skin-on fries dusted with African peri-peri spice and drenched in warm melted cheddar.',
-        image: 'https://images.unsplash.com/photo-1585109649139-366815a0d713?auto=format&fit=crop&w=600&q=80',
-        rating: 4.7
+        isBestSeller: false,
+        description: 'Popular dark soy soup loaded with finely chopped vegetables, cilantro & topped with fried noodles.',
+        image: 'https://images.unsplash.com/photo-1547592166-23ac45744acd?auto=format&fit=crop&w=600&q=80',
+        rating: 4.5
       },
       {
-        id: 'b2',
-        name: 'Draught Beer Pitcher (1.5L)',
+        id: 'hp_ch2',
+        name: 'Chicken Hot & Sour Soup',
+        category: 'chinese',
+        price: 170,
+        isVeg: false,
+        isSpicy: true,
+        isBestSeller: true,
+        description: 'Zesty Tangy broth with shredded chicken, bamboo shoots, egg white drop & white pepper.',
+        image: 'https://images.unsplash.com/photo-1547592166-23ac45744acd?auto=format&fit=crop&w=600&q=80',
+        rating: 4.7
+      },
+
+      // --- COCKTAILS & LOUNGE DRINKS ---
+      {
+        id: 'hp_d1',
+        name: 'High Point Electric Neon Pitcher (1.5L)',
         category: 'drinks',
-        price: 650,
+        price: 850,
         isVeg: true,
         isSpicy: false,
         isBestSeller: true,
-        description: 'Chilled premium draught beer pitcher served direct to table.',
-        image: 'https://images.unsplash.com/photo-1535958636474-b021ee887b13?auto=format&fit=crop&w=600&q=80',
-        rating: 4.9
+        description: 'Signature party pitcher! Vodka, Gin, White Rum, Blue Curacao, Lemonade & energy splash.',
+        image: 'https://images.unsplash.com/photo-1551024709-8f23befc6f87?auto=format&fit=crop&w=600&q=80',
+        rating: 5.0
+      },
+      {
+        id: 'hp_d2',
+        name: 'Classic LIIT Cocktail',
+        category: 'drinks',
+        price: 420,
+        isVeg: true,
+        isSpicy: false,
+        isBestSeller: true,
+        description: 'Potent mix of 5 white spirits, triple sec, fresh lime & cola float.',
+        image: 'https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b?auto=format&fit=crop&w=600&q=80',
+        rating: 4.8
+      },
+      {
+        id: 'hp_d3',
+        name: 'Fresh Watermelon Mojito (Mocktail)',
+        category: 'drinks',
+        price: 220,
+        isVeg: true,
+        isSpicy: false,
+        isBestSeller: false,
+        description: 'Fresh muddled watermelon, garden mint leaves, lime wedges & sparkling soda.',
+        image: 'https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?auto=format&fit=crop&w=600&q=80',
+        rating: 4.6
       }
     ];
 
     const initialCategories = [
       { id: 'all', label: '🔥 All Items' },
+      { id: 'starters', label: '🍗 Starters & Bar Bites' },
       { id: 'coastal', label: '🌊 Coastal Specials' },
-      { id: 'starters', label: '🍺 Bar Bites & Snacks' },
-      { id: 'drinks', label: '🍹 Drinks & Pitchers' }
+      { id: 'chinese', label: '🍜 Soups & Indo-Chinese' },
+      { id: 'drinks', label: '🍹 Cocktails & Drinks' }
     ];
 
     const initialTables = [
@@ -270,7 +361,7 @@
       mode: rawMode, // 'customer' | 'kitchen' | 'waiter' | 'admin' | 'qr'
       activeView: rawMode === 'admin' ? 'admin' : (rawMode === 'waiter' ? 'waiter' : (rawMode === 'kitchen' ? 'kds' : (rawMode === 'qr' ? 'qr' : 'menu'))),
       currentTable: initialTables.find(t => t.id === paramTableId) || initialTables[0],
-      menu: safeGetJSON('ttp_menu', initialMenu),
+      menu: safeGetJSON('ttp_menu_v2', initialMenu),
       categories: initialCategories,
       tables: safeGetJSON('ttp_tables', initialTables),
       waiters: safeGetJSON('ttp_waiters', initialWaiters),
@@ -300,8 +391,8 @@
     async function sendCloudEvent(type, payload) {
       try {
         fetch(CLOUD_URL, { method: 'POST', headers: { 'Title': type }, body: JSON.stringify({ type, payload, timestamp: Date.now() }) }).catch(e => {});
-        if (type === 'NEW_ORDER') {
-          fetch(REST_DB_URL, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ name: `TTP_ORDER_${payload.id}`, data: payload }) }).catch(e => {});
+        if (type === 'NEW_ORDER' || type === 'SERVICE_REQUEST') {
+          fetch(REST_DB_URL, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ name: `TTP_${type}_${payload.id}`, data: payload }) }).catch(e => {});
         }
       } catch (e) {}
     }
@@ -312,10 +403,18 @@
         if (!res.ok) return;
         const data = await res.json();
         let hasNew = false;
-        data.filter(i => i.name && i.name.startsWith('TTP_ORDER_')).forEach(i => {
-          if (i.data && i.data.id && !state.orders.some(o => o.id === i.data.id)) {
-            state.orders.push(i.data);
-            hasNew = true;
+        data.forEach(i => {
+          if (i.name && i.name.startsWith('TTP_NEW_ORDER_') && i.data && i.data.id) {
+            if (!state.orders.some(o => o.id === i.data.id)) {
+              state.orders.push(i.data);
+              hasNew = true;
+            }
+          }
+          if (i.name && i.name.startsWith('TTP_SERVICE_REQUEST_') && i.data && i.data.id) {
+            if (!state.serviceRequests.some(r => r.id === i.data.id)) {
+              state.serviceRequests.unshift(i.data);
+              hasNew = true;
+            }
           }
         });
         if (hasNew) { saveState(); renderApp(); }
@@ -332,12 +431,31 @@
             const raw = JSON.parse(e.data);
             if (!raw.message) return;
             const msg = JSON.parse(raw.message);
+            
             if (msg.type === 'NEW_ORDER' && !state.orders.some(o => o.id === msg.payload.id)) {
               state.orders.push(msg.payload);
               saveState(); renderApp();
+              showToast(`🔔 New Order #${msg.payload.id} placed for ${msg.payload.tableName.split('-')[0]}!`);
             } else if (msg.type === 'UPDATE_ORDER_STATUS') {
               const order = state.orders.find(o => o.id === msg.payload.orderId);
-              if (order) { order.status = msg.payload.nextStatus; saveState(); renderApp(); }
+              if (order) {
+                order.status = msg.payload.nextStatus;
+                saveState(); renderApp();
+                showToast(`⚡ Order #${order.id} status: ${order.status}`);
+              }
+            } else if (msg.type === 'SERVICE_REQUEST') {
+              const reqData = msg.payload.id ? msg.payload : { id: Date.now(), tableName: msg.payload.tableName, requestType: msg.payload.requestType, status: 'Pending', timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) };
+              if (!state.serviceRequests.some(r => r.id === reqData.id)) {
+                state.serviceRequests.unshift(reqData);
+                saveState(); renderApp();
+                showToast(`🔔 Table Call: ${reqData.requestType} for ${reqData.tableName.split('-')[0]}`);
+              }
+            } else if (msg.type === 'MENU_STOCK_UPDATE') {
+              const item = state.menu.find(m => m.id === msg.payload.itemId);
+              if (item) {
+                item.isAvailable = msg.payload.isAvailable;
+                saveState(); renderApp();
+              }
             }
           } catch (err) {}
         };
