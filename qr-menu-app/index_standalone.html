@@ -16,58 +16,58 @@
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
 
   <style>
-    :root, [data-theme="dark"] {
-      --bg-body: #000000;
-      --bg-card: #121212;
-      --surface: #1C1C1E;
-      --header-bg: rgba(0, 0, 0, 0.9);
-      --primary: #FFFFFF;
-      --primary-hover: #E4E4E7;
-      --secondary: #A1A1AA;
-      --accent-green: #22C55E;
-      --accent-red: #EF4444;
+    :root, [data-theme="light"] {
+      --bg-body: #FFF0F5; /* LavenderBlush Soft Pink Cream */
+      --bg-card: #FFFFFF; /* Pure White Glass Cards */
+      --surface: #FCE7F3; /* Soft Rose Blush Surface */
+      --header-bg: rgba(255, 240, 245, 0.92);
+      --primary: #EC4899; /* Radiant Rose Pink */
+      --primary-hover: #DB2777; /* Deep Pink */
+      --secondary: #F43F5E; /* Coral Pink */
+      --accent-green: #10B981; /* Fresh Emerald Green */
+      --accent-red: #F43F5E; /* Crimson Pink Red */
       --accent-blue: #3B82F6;
-      --text-main: #FFFFFF;
-      --text-muted: #A1A1AA;
-      --border: rgba(255, 255, 255, 0.16);
-      --radius-sm: 10px;
-      --radius-md: 16px;
-      --radius-lg: 24px;
-      --btn-bg: #FFFFFF;
-      --btn-text: #000000;
-      --dock-bg: rgba(18, 18, 18, 0.94);
-      --badge-bg: #FFFFFF;
-      --badge-text: #000000;
-      --icon-bg: #FFFFFF;
-      --icon-text: #000000;
-      --hero-bg: linear-gradient(135deg, rgba(255, 255, 255, 0.05), rgba(18, 18, 18, 0.95)), #121212;
-    }
-
-    [data-theme="light"] {
-      --bg-body: #F8F9FA;
-      --bg-card: #FFFFFF;
-      --surface: #F1F5F9;
-      --header-bg: rgba(255, 255, 255, 0.9);
-      --primary: #D97706;
-      --primary-hover: #B45309;
-      --secondary: #E11D48;
-      --accent-green: #059669;
-      --accent-red: #DC2626;
-      --accent-blue: #2563EB;
-      --text-main: #0F172A;
-      --text-muted: #64748B;
-      --border: rgba(217, 119, 6, 0.2);
-      --radius-sm: 10px;
-      --radius-md: 16px;
-      --radius-lg: 24px;
-      --btn-bg: linear-gradient(135deg, #D97706, #B45309);
+      --text-main: #831843; /* Deep Berry Plum Text */
+      --text-muted: #9D174D; /* Roseberry Muted Text */
+      --border: rgba(236, 72, 153, 0.25);
+      --radius-sm: 12px;
+      --radius-md: 18px;
+      --radius-lg: 26px;
+      --btn-bg: linear-gradient(135deg, #EC4899, #F43F5E); /* Pink Sunshine Gradient */
       --btn-text: #FFFFFF;
       --dock-bg: rgba(255, 255, 255, 0.94);
-      --badge-bg: linear-gradient(135deg, #D97706, #B45309);
+      --badge-bg: linear-gradient(135deg, #EC4899, #F43F5E);
       --badge-text: #FFFFFF;
-      --icon-bg: linear-gradient(135deg, rgba(217, 119, 6, 0.15), rgba(225, 29, 72, 0.1));
-      --icon-text: inherit;
-      --hero-bg: linear-gradient(135deg, rgba(217, 119, 6, 0.08), rgba(248, 249, 250, 0.95)), #FFFFFF;
+      --icon-bg: rgba(236, 72, 153, 0.15);
+      --icon-text: #EC4899;
+      --hero-bg: linear-gradient(135deg, rgba(236, 72, 153, 0.12), rgba(255, 240, 245, 0.95)), #FFFFFF;
+    }
+
+    [data-theme="dark"] {
+      --bg-body: #160B18; /* Dark Mauve Velvet Plum */
+      --bg-card: #231227; /* Dark Plum Glass Card */
+      --surface: #2E1733; /* Plum Slate */
+      --header-bg: rgba(22, 11, 24, 0.92);
+      --primary: #F472B6; /* Bright Neon Pink */
+      --primary-hover: #EC4899;
+      --secondary: #FB7185;
+      --accent-green: #34D399;
+      --accent-red: #FB7185;
+      --accent-blue: #60A5FA;
+      --text-main: #FDF2F8; /* Crisp Pink White */
+      --text-muted: #F472B6; /* Soft Lavender Pink */
+      --border: rgba(244, 114, 182, 0.25);
+      --radius-sm: 12px;
+      --radius-md: 18px;
+      --radius-lg: 26px;
+      --btn-bg: linear-gradient(135deg, #F472B6, #FB7185);
+      --btn-text: #160B18;
+      --dock-bg: rgba(35, 18, 39, 0.94);
+      --badge-bg: linear-gradient(135deg, #F472B6, #FB7185);
+      --badge-text: #160B18;
+      --icon-bg: rgba(244, 114, 182, 0.2);
+      --icon-text: #F472B6;
+      --hero-bg: linear-gradient(135deg, rgba(244, 114, 182, 0.15), rgba(35, 18, 39, 0.95)), #231227;
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Outfit', 'Inter', sans-serif; -webkit-tap-highlight-color: transparent; }
@@ -180,189 +180,179 @@
       }
     };
 
-    // --- AUTHENTIC HIGH POINT LOUNGE MANIPAL MENU DATA ---
+    // --- AUTHENTIC BOX OF SUNSHINE CAFE MENU DATA ---
+    const initialCategories = [
+      { id: 'all', label: '☀️ All Items' },
+      { id: 'coffee', label: '☕ Signature Coffees & Lattes' },
+      { id: 'drinks', label: '🌸 Pink Smoothies & Shakes' },
+      { id: 'breakfast', label: '🥞 Pancakes & Waffles' },
+      { id: 'savory', label: '🍝 Pastas & Toasties' },
+      { id: 'desserts', label: '🍰 Bakery & Desserts' }
+    ];
+
     const initialMenu = [
-      // --- STARTERS & BAR BITES ---
+      // COFFEE
       {
-        id: 'hp_s1',
-        name: 'Veg Hara Bhara Kabab',
-        category: 'starters',
+        id: 'bos_c1',
+        name: 'Pink Rose Velvet Latte',
+        category: 'coffee',
+        price: 190,
+        isVeg: true,
+        isSpicy: false,
+        isBestSeller: true,
+        description: 'Smooth double espresso over steamed velvet milk, organic French rose syrup & edible dried rose petals.',
+        image: 'https://images.unsplash.com/photo-1541167760496-1628856ab772?auto=format&fit=crop&w=600&q=80',
+        rating: 4.9
+      },
+      {
+        id: 'bos_c2',
+        name: 'Iced Spanish Sunshine Latte',
+        category: 'coffee',
+        price: 210,
+        isVeg: true,
+        isSpicy: false,
+        isBestSeller: true,
+        description: 'Rich dark espresso shaken with condensed sweet milk, cinnamon dust & silky cold cream foam.',
+        image: 'https://images.unsplash.com/photo-1517701604599-bb29b565090c?auto=format&fit=crop&w=600&q=80',
+        rating: 4.8
+      },
+      {
+        id: 'bos_c3',
+        name: 'Vanilla Bean Caramel Cold Brew',
+        category: 'coffee',
         price: 220,
         isVeg: true,
         isSpicy: false,
         isBestSeller: false,
-        description: 'Crispy spinach & green peas tikkis spiked with aromatic Indian spices & mint chutney.',
-        image: 'https://images.unsplash.com/photo-1601050690597-df0568f70950?auto=format&fit=crop&w=600&q=80',
-        rating: 4.7
-      },
-      {
-        id: 'hp_s2',
-        name: 'Paneer Garlic Tikka',
-        category: 'starters',
-        price: 260,
-        isVeg: true,
-        isSpicy: true,
-        isBestSeller: true,
-        description: 'Tandoor-charred cottage cheese cubes infused with roasted garlic & yellow chilli marinade.',
-        image: 'https://images.unsplash.com/photo-1567188040759-fb8a883dc6d8?auto=format&fit=crop&w=600&q=80',
-        rating: 4.8
-      },
-      {
-        id: 'hp_s3',
-        name: 'Paneer Schezwan Crisp',
-        category: 'starters',
-        price: 270,
-        isVeg: true,
-        isSpicy: true,
-        isBestSeller: false,
-        description: 'Crunchy fried paneer tossed in fiery red Schezwan pepper sauce & spring onions.',
-        image: 'https://images.unsplash.com/photo-1541832676-9b763b0239ab?auto=format&fit=crop&w=600&q=80',
-        rating: 4.6
-      },
-      {
-        id: 'hp_s4',
-        name: 'Chicken Pepper Dry',
-        category: 'starters',
-        price: 280,
-        isVeg: false,
-        isSpicy: true,
-        isBestSeller: true,
-        description: 'South Indian style succulent chicken morsels fried with crushed Malabar black pepper & curry leaves.',
-        image: 'https://images.unsplash.com/photo-1603894584373-5ac82b2ae398?auto=format&fit=crop&w=600&q=80',
-        rating: 4.9
-      },
-      {
-        id: 'hp_s5',
-        name: 'Tandoori Chicken (Half)',
-        category: 'starters',
-        price: 260,
-        isVeg: false,
-        isSpicy: true,
-        isBestSeller: true,
-        description: 'Classic clay-oven roasted chicken marinated overnight in Kashmiri chilli yogurt marinade.',
-        image: 'https://images.unsplash.com/photo-1626777552726-4a6b54c97e46?auto=format&fit=crop&w=600&q=80',
-        rating: 4.8
-      },
-
-      // --- COASTAL & MANIPAL SPECIALS ---
-      {
-        id: 'hp_c1',
-        name: 'Mangalorean Chicken Ghee Roast',
-        category: 'coastal',
-        price: 340,
-        isVeg: false,
-        isSpicy: true,
-        isBestSeller: true,
-        description: 'Signature High Point coastal delight! Chicken braised in fiery Byadgi chilli paste & pure desi ghee.',
-        image: 'https://images.unsplash.com/photo-1603894584373-5ac82b2ae398?auto=format&fit=crop&w=600&q=80',
-        rating: 4.9,
-        options: [{ name: 'Spice Level', choices: ['Authentic Fiery', 'Medium Hot', 'Mild'] }]
-      },
-      {
-        id: 'hp_c2',
-        name: 'Paneer Ghee Roast',
-        category: 'coastal',
-        price: 290,
-        isVeg: true,
-        isSpicy: true,
-        isBestSeller: true,
-        description: 'Fresh cottage cheese cubes tossed in aromatic Kundapura roasted spices & rich clarified butter.',
-        image: 'https://images.unsplash.com/photo-1567188040759-fb8a883dc6d8?auto=format&fit=crop&w=600&q=80',
-        rating: 4.8
-      },
-      {
-        id: 'hp_c3',
-        name: 'Anjal (Seer Fish) Tawa Fry',
-        category: 'coastal',
-        price: 420,
-        isVeg: false,
-        isSpicy: true,
-        isBestSeller: true,
-        description: 'Fresh catch King Fish slice coated in semolina & coastal red masala, tava pan-seared.',
-        image: 'https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?auto=format&fit=crop&w=600&q=80',
-        rating: 4.9
-      },
-
-      // --- SOUPS & CHINESE ---
-      {
-        id: 'hp_ch1',
-        name: 'Veg Manchow Soup',
-        category: 'chinese',
-        price: 140,
-        isVeg: true,
-        isSpicy: true,
-        isBestSeller: false,
-        description: 'Popular dark soy soup loaded with finely chopped vegetables, cilantro & topped with fried noodles.',
-        image: 'https://images.unsplash.com/photo-1547592166-23ac45744acd?auto=format&fit=crop&w=600&q=80',
-        rating: 4.5
-      },
-      {
-        id: 'hp_ch2',
-        name: 'Chicken Hot & Sour Soup',
-        category: 'chinese',
-        price: 170,
-        isVeg: false,
-        isSpicy: true,
-        isBestSeller: true,
-        description: 'Zesty Tangy broth with shredded chicken, bamboo shoots, egg white drop & white pepper.',
-        image: 'https://images.unsplash.com/photo-1547592166-23ac45744acd?auto=format&fit=crop&w=600&q=80',
+        description: '18-hour steep cold brew coffee topped with Madagascar vanilla syrup & golden salted caramel drizzle.',
+        image: 'https://images.unsplash.com/photo-1517256064527-09c73fc73e38?auto=format&fit=crop&w=600&q=80',
         rating: 4.7
       },
 
-      // --- COCKTAILS & LOUNGE DRINKS ---
+      // DRINKS & SMOOTHIES
       {
-        id: 'hp_d1',
-        name: 'High Point Electric Neon Pitcher (1.5L)',
+        id: 'bos_d1',
+        name: 'Pink Dragonfruit Berry Smoothie',
         category: 'drinks',
-        price: 850,
+        price: 230,
         isVeg: true,
         isSpicy: false,
         isBestSeller: true,
-        description: 'Signature party pitcher! Vodka, Gin, White Rum, Blue Curacao, Lemonade & energy splash.',
-        image: 'https://images.unsplash.com/photo-1551024709-8f23befc6f87?auto=format&fit=crop&w=600&q=80',
+        description: 'Vibrant pink pitaya dragonfruit blended with fresh strawberries, almond milk & chia seeds.',
+        image: 'https://images.unsplash.com/photo-1553530666-ba11a7da3888?auto=format&fit=crop&w=600&q=80',
         rating: 5.0
       },
       {
-        id: 'hp_d2',
-        name: 'Classic LIIT Cocktail',
+        id: 'bos_d2',
+        name: 'Strawberry Boba Milk Tea',
         category: 'drinks',
-        price: 420,
+        price: 210,
         isVeg: true,
         isSpicy: false,
         isBestSeller: true,
-        description: 'Potent mix of 5 white spirits, triple sec, fresh lime & cola float.',
-        image: 'https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b?auto=format&fit=crop&w=600&q=80',
-        rating: 4.8
+        description: 'Creamy fresh strawberry milk tea with brown sugar tapioca boba pearls & whipped cloud cream.',
+        image: 'https://images.unsplash.com/photo-1558857563-b371033873b8?auto=format&fit=crop&w=600&q=80',
+        rating: 4.9
       },
       {
-        id: 'hp_d3',
-        name: 'Fresh Watermelon Mojito (Mocktail)',
+        id: 'bos_d3',
+        name: 'Pink Lemonade Sparkling Cooler',
         category: 'drinks',
-        price: 220,
+        price: 170,
         isVeg: true,
         isSpicy: false,
         isBestSeller: false,
-        description: 'Fresh muddled watermelon, garden mint leaves, lime wedges & sparkling soda.',
-        image: 'https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?auto=format&fit=crop&w=600&q=80',
+        description: 'Sparkling lemon fizzy cooler with crushed raspberries, mint leaves & edible glitter.',
+        image: 'https://images.unsplash.com/photo-1621263764928-df1444c5e859?auto=format&fit=crop&w=600&q=80',
         rating: 4.6
+      },
+
+      // BREAKFAST & PANCAKES
+      {
+        id: 'bos_b1',
+        name: 'Fluffy Strawberry Nutella Soufflé Pancakes',
+        category: 'breakfast',
+        price: 260,
+        isVeg: true,
+        isSpicy: false,
+        isBestSeller: true,
+        description: 'Cloud-like Japanese soufflé pancakes stacked with Nutella, fresh strawberries & maple glaze.',
+        image: 'https://images.unsplash.com/photo-1567620905732-2d1ec7ab7445?auto=format&fit=crop&w=600&q=80',
+        rating: 5.0
+      },
+      {
+        id: 'bos_b2',
+        name: 'Artisan Butter Croissant & Berry Jam',
+        category: 'breakfast',
+        price: 160,
+        isVeg: true,
+        isSpicy: false,
+        isBestSeller: false,
+        description: 'Flaky multi-layered golden French croissant baked fresh daily, served with homemade wild berry jam.',
+        image: 'https://images.unsplash.com/photo-1555507036-ab1f4038808a?auto=format&fit=crop&w=600&q=80',
+        rating: 4.7
+      },
+
+      // SAVORY & PASTAS
+      {
+        id: 'bos_s1',
+        name: 'Creamy Pink Sauce Penne Pasta',
+        category: 'savory',
+        price: 280,
+        isVeg: true,
+        isSpicy: true,
+        isBestSeller: true,
+        description: 'Al dente penne in a rich blend of creamy Alfredo & tangy Arrabbiata tomato sauce with parmesan & basil.',
+        image: 'https://images.unsplash.com/photo-1621996346565-e3d5d6281318?auto=format&fit=crop&w=600&q=80',
+        rating: 4.9
+      },
+      {
+        id: 'bos_s2',
+        name: 'Truffle Mushroom & Sourdough Toastie',
+        category: 'savory',
+        price: 240,
+        isVeg: true,
+        isSpicy: false,
+        isBestSeller: true,
+        description: 'Artisan sourdough grilled with white truffle oil, sautéed wild mushrooms & melted mozzarella cheese.',
+        image: 'https://images.unsplash.com/photo-1528735602780-2552fd46c7af?auto=format&fit=crop&w=600&q=80',
+        rating: 4.8
+      },
+
+      // DESSERTS
+      {
+        id: 'bos_e1',
+        name: 'Classic New York Cheesecake Slice',
+        category: 'desserts',
+        price: 270,
+        isVeg: true,
+        isSpicy: false,
+        isBestSeller: true,
+        description: 'Rich velvety dense cheesecake on graham cracker crust topped with fresh raspberry coulis.',
+        image: 'https://images.unsplash.com/photo-1533134242443-d4fd215305ad?auto=format&fit=crop&w=600&q=80',
+        rating: 4.9
+      },
+      {
+        id: 'bos_e2',
+        name: 'Warm Belgian Chocolate Brownie Sundae',
+        category: 'desserts',
+        price: 250,
+        isVeg: true,
+        isSpicy: false,
+        isBestSeller: true,
+        description: 'Fudgy dark chocolate brownie served warm with French vanilla bean ice cream & hot fudge sauce.',
+        image: 'https://images.unsplash.com/photo-1606313564200-e75d5e30476c?auto=format&fit=crop&w=600&q=80',
+        rating: 4.9
       }
     ];
 
-    const initialCategories = [
-      { id: 'all', label: '🔥 All Items' },
-      { id: 'starters', label: '🍗 Starters & Bar Bites' },
-      { id: 'coastal', label: '🌊 Coastal Specials' },
-      { id: 'chinese', label: '🍜 Soups & Indo-Chinese' },
-      { id: 'drinks', label: '🍹 Cocktails & Drinks' }
-    ];
-
     const initialTables = [
-      { id: 1, name: 'Table 01 - Main Lounge', capacity: 4, status: 'Available', reservedFor: null, reservationTime: null },
-      { id: 2, name: 'Table 02 - Rooftop Garden', capacity: 2, status: 'Available', reservedFor: null, reservationTime: null },
-      { id: 3, name: 'Table 03 - Patio Booth', capacity: 6, status: 'Available', reservedFor: null, reservationTime: null },
-      { id: 4, name: 'Table 04 - VIP Section', capacity: 8, status: 'Available', reservedFor: null, reservationTime: null },
-      { id: 5, name: 'Table 05 - Bar Counter 1', capacity: 2, status: 'Available', reservedFor: null, reservationTime: null },
-      { id: 6, name: 'Table 06 - Bar Counter 2', capacity: 2, status: 'Available', reservedFor: null, reservationTime: null }
+      { id: 1, name: 'Table 01 - Pink Cafe Garden', capacity: 4, status: 'Available', reservedFor: null, reservationTime: null },
+      { id: 2, name: 'Table 02 - Sunshine Terrace', capacity: 2, status: 'Available', reservedFor: null, reservationTime: null },
+      { id: 3, name: 'Table 03 - Velvet Booth', capacity: 6, status: 'Available', reservedFor: null, reservationTime: null },
+      { id: 4, name: 'Table 04 - VIP Lounge', capacity: 8, status: 'Available', reservedFor: null, reservationTime: null },
+      { id: 5, name: 'Table 05 - Window Counter 1', capacity: 2, status: 'Available', reservedFor: null, reservationTime: null },
+      { id: 6, name: 'Table 06 - Window Counter 2', capacity: 2, status: 'Available', reservedFor: null, reservationTime: null }
     ];
 
     const initialWaiters = [
@@ -372,8 +362,8 @@
     ];
 
     const initialRatings = [
-      { id: 101, orderId: 1001, tableName: 'Table 01', rating: 5, comment: 'Chicken Ghee Roast was incredible! Super fast service.', customerName: 'Varun S', timestamp: '1 hour ago' },
-      { id: 102, orderId: 1002, tableName: 'Table 04', rating: 5, comment: 'Cold Beer Pitchers and Anjal Fry made our evening.', customerName: 'Sneha R', timestamp: '2 hours ago' }
+      { id: 101, orderId: 1001, tableName: 'Table 01', rating: 5, comment: 'Pink Rose Velvet Latte & Soufflé Pancakes were divine!', customerName: 'Varun S', timestamp: '1 hour ago' },
+      { id: 102, orderId: 1002, tableName: 'Table 04', rating: 5, comment: 'Best Spanish Latte and Truffle Toastie in Manipal.', customerName: 'Sneha R', timestamp: '2 hours ago' }
     ];
 
     function safeGetJSON(key, fallback) {
@@ -394,11 +384,11 @@
     if (rawMode === 'staff' || rawMode === 'kds') rawMode = 'kitchen';
 
     let state = {
-      theme: localStorage.getItem('ttp_theme') || 'dark',
+      theme: localStorage.getItem('ttp_theme') || 'light',
       mode: rawMode, // 'customer' | 'kitchen' | 'waiter' | 'admin' | 'qr'
       activeView: rawMode === 'admin' ? 'admin' : (rawMode === 'waiter' ? 'waiter' : (rawMode === 'kitchen' ? 'kds' : (rawMode === 'qr' ? 'qr' : 'menu'))),
       currentTable: initialTables.find(t => t.id === paramTableId) || initialTables[0],
-      menu: safeGetJSON('ttp_menu_v2', initialMenu),
+      menu: safeGetJSON('ttp_menu_v3', initialMenu),
       categories: initialCategories,
       tables: safeGetJSON('ttp_tables', initialTables),
       waiters: safeGetJSON('ttp_waiters', initialWaiters),
@@ -409,7 +399,7 @@
       cart: safeGetJSON('ttp_cart', []),
       orders: safeGetJSON('ttp_orders', []),
       serviceRequests: safeGetJSON('ttp_requests', []),
-      brandConfig: safeGetJSON('ttp_brand', { name: 'The High Point Lounge', location: 'Manipal, Karnataka', gstRate: 5, currency: '₹' }),
+      brandConfig: safeGetJSON('ttp_brand_v3', { name: 'Box of Sunshine', location: 'Manipal, Karnataka', gstRate: 5, currency: '₹' }),
       selectedItemForModal: null,
       isCartOpen: false,
       isStaffPinModalOpen: false,
@@ -417,9 +407,9 @@
       selectedTableForReservation: null,
       isWaiterModalOpen: false,
       activeOrder: null,
-      qrConfig: { selectedTableId: 1, headerText: 'SCAN TO ORDER FOOD & DRINKS', subText: 'Point camera & order tableside', qrColor: '000000', borderColor: '#F59E0B', centerIcon: '🍹', wifiSSID: 'HighPoint_Guest_5G' }
+      qrConfig: { selectedTableId: 1, headerText: 'SCAN TO ORDER FOOD & DRINKS', subText: 'Point camera & order tableside', qrColor: 'EC4899', borderColor: '#EC4899', centerIcon: '☀️', wifiSSID: 'BoxOfSunshine_Guest_5G' }
     };
-    if (state.brandConfig) state.brandConfig.name = 'The High Point Lounge';
+    if (state.brandConfig) state.brandConfig.name = 'Box of Sunshine';
     document.documentElement.setAttribute('data-theme', state.theme);
 
     // Cloud Sync Engine
@@ -554,9 +544,9 @@
         <div style="max-width:900px; margin:20px auto; padding:10px;">
           <!-- Header Banner -->
           <div class="hero-banner" style="text-align:center; padding:30px 20px;">
-            <div style="margin-bottom:12px;"><img src="assets/logo.png" onerror="this.src='logo.png'" alt="The High Point Lounge Logo" style="width:100px; height:100px; object-fit:contain; border-radius:50%; border:2px solid var(--border); box-shadow:0 6px 20px rgba(0,0,0,0.3);" /></div>
+            <div style="font-size:3.5rem; margin-bottom:8px;">☀️</div>
             <h1 style="font-size:1.8rem; font-weight:800; color:var(--text-main);">${state.brandConfig.name}</h1>
-            <p style="color:var(--text-muted); font-size:0.9rem; margin-top:4px;">Tabletop QR Digital Dining & Staff Management System</p>
+            <p style="color:var(--text-muted); font-size:0.9rem; margin-top:4px;">Artisan Coffee, Pancakes & Digital Tabletop Ordering</p>
           </div>
 
           <!-- Staff Role Cards Grid -->
@@ -687,7 +677,7 @@
         <header class="app-header">
           <div class="header-container">
             <a href="/" class="brand-title">
-              <div class="brand-icon" style="padding:2px;"><img src="assets/logo.png" onerror="this.src='logo.png'" alt="The High Point Lounge Logo" style="width:100%; height:100%; object-fit:contain; border-radius:var(--radius-sm);" /></div>
+              <div class="brand-icon">🌸</div>
               <div>
                 <div class="brand-name">${state.brandConfig.name}</div>
                 <div class="brand-location">📍 ${state.brandConfig.location}</div>
@@ -754,17 +744,17 @@
               <div style="font-size:0.75rem; font-weight:800; color:var(--accent-green); text-transform:uppercase; letter-spacing:1px; margin-bottom:6px; display:flex; align-items:center; gap:6px;">
                 <span style="width:8px; height:8px; background:var(--accent-green); border-radius:50%; box-shadow:0 0 10px var(--accent-green); display:inline-block;"></span> KITCHEN LIVE • AVG SERVE: 12 MINS
               </div>
-              <h2 style="font-size:1.5rem; font-weight:800; color:var(--text-main); letter-spacing:-0.5px; display:flex; align-items:center; gap:8px;">${state.brandConfig.name} <img src="assets/logo.png" onerror="this.src='logo.png'" style="width:28px; height:28px; object-fit:contain; border-radius:50%;" /></h2>
+              <h2 style="font-size:1.5rem; font-weight:800; color:var(--text-main); letter-spacing:-0.5px; display:flex; align-items:center; gap:8px;">${state.brandConfig.name} ☀️</h2>
               <p style="color:var(--text-muted); font-size:0.85rem; margin-top:2px;">Digital Dining at <strong>${state.currentTable.name}</strong></p>
             </div>
-            <div style="background:rgba(245,158,11,0.15); border:1px solid var(--primary); padding:6px 12px; border-radius:14px; font-weight:800; font-size:0.8rem; color:var(--primary); box-shadow:0 0 12px rgba(245,158,11,0.2);">
+            <div style="background:var(--surface); border:1px solid var(--primary); padding:6px 14px; border-radius:18px; font-weight:800; font-size:0.8rem; color:var(--primary);">
               📍 ${state.currentTable.name.split('-')[0]}
             </div>
           </div>
 
           <div class="search-box">
             <span>🔍</span>
-            <input type="text" class="search-input" id="search-input" placeholder="Search ghee roast, King fish, draught beer..." value="${state.searchQuery}" />
+            <input type="text" class="search-input" id="search-input" placeholder="Search Rose latte, Spanish latte, Soufflé pancakes, boba tea..." value="${state.searchQuery}" />
           </div>
         </div>
 
@@ -1158,9 +1148,9 @@
               
               <!-- Brand Header -->
               <div style="display:flex; align-items:center; justify-content:center; gap:8px; margin-bottom:12px;">
-                <div style="width:44px; height:44px; border-radius:12px; display:flex; align-items:center; justify-content:center; border:1px solid ${state.qrConfig.borderColor}; background:#000; overflow:hidden; padding:2px;"><img src="assets/logo.png" onerror="this.src='logo.png'" alt="Logo" style="width:100%; height:100%; object-fit:contain; border-radius:50%;" /></div>
+                <div style="font-size:2rem; background:var(--surface); width:44px; height:44px; border-radius:12px; display:flex; align-items:center; justify-content:center; border:1px solid ${state.qrConfig.borderColor};">☀️</div>
                 <div style="text-align:left;">
-                  <div style="font-weight:800; font-size:1.15rem; color:#fff;">${state.brandConfig.name}</div>
+                  <div style="font-weight:800; font-size:1.15rem; color:var(--text-main);">${state.brandConfig.name}</div>
                   <div style="font-size:0.75rem; color:var(--text-muted);">📍 ${state.brandConfig.location}</div>
                 </div>
               </div>
