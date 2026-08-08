@@ -1,3 +1,17 @@
+// Global Alert Override to prevent native browser popups
+window.alert = function(msg) {
+  let toast = document.getElementById('toast-notification');
+  if (!toast) {
+    toast = document.createElement('div');
+    toast.id = 'toast-notification';
+    toast.style.cssText = 'position:fixed; top:24px; left:50%; transform:translateX(-50%); background:linear-gradient(135deg, #D97706, #B45309); color:#FFF; font-weight:800; font-size:0.88rem; padding:12px 24px; border-radius:30px; box-shadow:0 10px 30px rgba(0,0,0,0.18); z-index:999; animation:slideUp 0.3s ease; pointer-events:none; text-align:center; max-width:90%;';
+    document.body.appendChild(toast);
+  }
+  toast.innerText = msg;
+  toast.style.display = 'block';
+  setTimeout(() => { if (toast) toast.style.display = 'none'; }, 2500);
+};
+
 // --- MANIPAL RESTRO-BAR MENU DATA (INLINED FOR ZERO-CORS FILE SYSTEM COMPATIBILITY) ---
 const initialMenu = [
   // --- COASTAL & LOCAL SPECIALS ---

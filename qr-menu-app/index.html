@@ -135,6 +135,15 @@
   <div id="app"></div>
 
   <script>
+    // Global Alert Override to prevent native browser popups
+    window.alert = function(msg) {
+      if (typeof showToast === 'function') {
+        showToast(msg);
+      } else {
+        console.log('Suppressed alert:', msg);
+      }
+    };
+
     // --- MANIPAL RESTRO-BAR MENU DATA ---
     const initialMenu = [
       {
@@ -251,10 +260,10 @@
       } catch (e) { return fallback; }
     }
 
-    // URL Parsing for Dedicated 4 Roles
+    // URL Parsing for Dedicated 4 Roles + Root Landing Portal
     const urlParams = new URLSearchParams(window.location.search);
     const paramTableId = parseInt(urlParams.get('table')) || null;
-    let rawMode = urlParams.get('mode') || (paramTableId ? 'customer' : 'customer');
+    let rawMode = urlParams.get('mode') || (paramTableId ? 'customer' : 'portal');
     if (rawMode === 'staff' || rawMode === 'kds') rawMode = 'kitchen';
 
     let state = {
@@ -360,6 +369,93 @@
       state.activeOrder = tableOrders.length > 0 ? tableOrders[tableOrders.length - 1] : null;
     }
 
+    function showToast(msg) {
+      let toast = document.getElementById('toast-notification');
+      if (!toast) {
+        toast = document.createElement('div');
+        toast.id = 'toast-notification';
+        toast.style.cssText = 'position:fixed; top:24px; left:50%; transform:translateX(-50%); background:linear-gradient(135deg, var(--primary), #B45309); color:#FFF; font-weight:800; font-size:0.88rem; padding:12px 24px; border-radius:30px; box-shadow:0 10px 30px rgba(0,0,0,0.18); z-index:999; animation:slideUp 0.3s ease; pointer-events:none; text-align:center; max-width:90%;';
+        document.body.appendChild(toast);
+      }
+      toast.innerText = msg;
+      toast.style.display = 'block';
+      setTimeout(() => { if (toast) toast.style.display = 'none'; }, 2500);
+    }
+
+    function renderPortalView() {
+      return `
+        <div style="max-width:900px; margin:20px auto; padding:10px;">
+          <!-- Header Banner -->
+          <div class="hero-banner" style="text-align:center; padding:30px 20px;">
+            <div style="font-size:3.5rem; margin-bottom:8px;">🍹</div>
+            <h1 style="font-size:1.8rem; font-weight:800; color:var(--text-main);">${state.brandConfig.name}</h1>
+            <p style="color:var(--text-muted); font-size:0.9rem; margin-top:4px;">Tabletop QR Digital Dining & Staff Management System</p>
+          </div>
+
+          <!-- Staff Role Cards Grid -->
+          <h3 style="font-size:1.15rem; font-weight:800; margin-bottom:14px; color:var(--text-main);">🔐 STAFF PORTAL ACCESS (DEDICATED PINS)</h3>
+          <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(260px, 1fr)); gap:16px; margin-bottom:32px;">
+            
+            <!-- Admin Card -->
+            <div class="menu-card" style="padding:20px; border:1px solid var(--primary);">
+              <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:10px;">
+                <div style="font-size:2rem; background:rgba(217,119,6,0.15); width:48px; height:48px; border-radius:12px; display:flex; align-items:center; justify-content:center;">📊</div>
+                <span style="font-size:0.75rem; font-weight:800; background:rgba(217,119,6,0.15); color:var(--primary); padding:4px 10px; border-radius:12px; border:1px solid var(--primary);">PIN: 1234</span>
+              </div>
+              <h3 style="font-size:1.1rem; font-weight:800; color:var(--text-main);">Manager Admin</h3>
+              <p style="font-size:0.8rem; color:var(--text-muted); margin-top:6px; margin-bottom:16px; line-height:1.4;">
+                Full access to sales revenue, table management, consolidated billing, inventory stock 86 list, kitchen, waiters & QR builder.
+              </p>
+              <button class="btn-checkout btn-open-role-pin" data-role="admin" style="font-size:0.85rem; padding:10px;">
+                Unlock Manager Admin (1234) ➔
+              </button>
+            </div>
+
+            <!-- Kitchen Card -->
+            <div class="menu-card" style="padding:20px;">
+              <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:10px;">
+                <div style="font-size:2rem; background:rgba(5,150,105,0.15); width:48px; height:48px; border-radius:12px; display:flex; align-items:center; justify-content:center;">👨‍🍳</div>
+                <span style="font-size:0.75rem; font-weight:800; background:rgba(5,150,105,0.15); color:var(--accent-green); padding:4px 10px; border-radius:12px; border:1px solid var(--accent-green);">PIN: 5678</span>
+              </div>
+              <h3 style="font-size:1.1rem; font-weight:800; color:var(--text-main);">Kitchen Display (KDS)</h3>
+              <p style="font-size:0.8rem; color:var(--text-muted); margin-top:6px; margin-bottom:16px; line-height:1.4;">
+                Live 4-column cooking ticket board with cooking notes, allergy tags & preparation status controls.
+              </p>
+              <button class="btn-checkout btn-open-role-pin" data-role="kitchen" style="font-size:0.85rem; padding:10px; background:linear-gradient(135deg, var(--accent-green), #047857);">
+                Unlock Kitchen Board (5678) ➔
+              </button>
+            </div>
+
+            <!-- Waiter Card -->
+            <div class="menu-card" style="padding:20px;">
+              <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:10px;">
+                <div style="font-size:2rem; background:rgba(225,29,72,0.15); width:48px; height:48px; border-radius:12px; display:flex; align-items:center; justify-content:center;">🏃</div>
+                <span style="font-size:0.75rem; font-weight:800; background:rgba(225,29,72,0.15); color:var(--secondary); padding:4px 10px; border-radius:12px; border:1px solid var(--secondary);">PIN: 9012</span>
+              </div>
+              <h3 style="font-size:1.1rem; font-weight:800; color:var(--text-main);">Floor Waiter Dispatch</h3>
+              <p style="font-size:0.8rem; color:var(--text-muted); margin-top:6px; margin-bottom:16px; line-height:1.4;">
+                Ready food pickup alerts, table assistance calls (Water, Call Waiter, Bill Request) & table checkout.
+              </p>
+              <button class="btn-checkout btn-open-role-pin" data-role="waiter" style="font-size:0.85rem; padding:10px; background:linear-gradient(135deg, var(--secondary), #BE123C);">
+                Unlock Floor Waiters (9012) ➔
+              </button>
+            </div>
+
+          </div>
+
+          <!-- Customer Table Direct Access -->
+          <h3 style="font-size:1.15rem; font-weight:800; margin-bottom:14px; color:var(--text-main);">📱 CUSTOMER TABLE ORDERING (TABLE SIMULATION)</h3>
+          <div style="display:grid; grid-template-columns:repeat(auto-fill, minmax(180px, 1fr)); gap:12px;">
+            ${state.tables.map(t => `
+              <a href="?table=${t.id}" class="option-pill" style="display:block; text-align:center; padding:14px; text-decoration:none; font-weight:800; font-size:0.9rem; border-color:var(--primary); color:var(--primary);">
+                📍 ${t.name.split('-')[0]}
+              </a>
+            `).join('')}
+          </div>
+        </div>
+      `;
+    }
+
     function renderApp() {
       try {
         if (state.mode === 'customer' && state.activeView !== 'menu') state.activeView = 'menu';
@@ -373,6 +469,7 @@
         appContainer.innerHTML = `
           ${renderHeader()}
           <main class="container">
+            ${state.mode === 'portal' ? renderPortalView() : ''}
             ${state.mode === 'customer' ? renderCustomerView() : ''}
             ${state.mode === 'kitchen' ? renderKDSView() : ''}
             ${state.mode === 'waiter' ? renderWaiterDispatchView() : ''}
@@ -422,7 +519,7 @@
       return `
         <header class="app-header">
           <div class="header-container">
-            <a href="?table=${state.currentTable.id}" class="brand-title">
+            <a href="/" class="brand-title">
               <div class="brand-icon">🍹</div>
               <div>
                 <div class="brand-name">${state.brandConfig.name}</div>
@@ -430,13 +527,15 @@
               </div>
             </a>
 
-            ${state.mode === 'kitchen' ? `<span style="font-weight:800; color:var(--primary); font-size:0.95rem;">👨‍🍳 Kitchen Display System</span>` : ''}
+            ${state.mode === 'portal' ? `<span style="font-weight:800; color:var(--primary); font-size:0.88rem; background:rgba(217,119,6,0.1); padding:6px 14px; border-radius:20px; border:1px solid var(--primary);">🔐 Staff Portal Hub</span>` : ''}
+            ${state.mode === 'kitchen' ? `<span style="font-weight:800; color:var(--accent-green); font-size:0.95rem;">👨‍🍳 Kitchen Display System</span>` : ''}
+            ${state.mode === 'waiter' ? `<span style="font-weight:800; color:var(--secondary); font-size:0.95rem;">🏃 Floor Waiter Dispatch</span>` : ''}
             ${state.mode === 'admin' ? `
               <nav class="view-nav">
-                <a href="?mode=admin" class="view-btn ${state.activeView === 'admin' ? 'active' : ''}">📊 Admin</a>
+                <a href="?mode=admin" class="view-btn ${state.activeView === 'admin' ? 'active' : ''}">📊 Admin Master</a>
                 <a href="?mode=kitchen" class="view-btn ${state.activeView === 'kds' ? 'active' : ''}">👨‍🍳 Kitchen</a>
                 <a href="?mode=waiter" class="view-btn ${state.activeView === 'waiter' ? 'active' : ''}">🏃 Waiters</a>
-                <a href="?mode=qr" class="view-btn ${state.activeView === 'qr' ? 'active' : ''}">🔲 QRs</a>
+                <a href="?mode=qr" class="view-btn ${state.activeView === 'qr' ? 'active' : ''}">🔲 QR Builder</a>
               </nav>
             ` : ''}
 
@@ -982,19 +1081,30 @@
     }
 
     function renderStaffPinModal() {
+      const selectedRole = state.preselectedRole || 'admin';
       return `
         <div class="modal-overlay">
-          <div class="modal-card" style="padding:20px; max-width:360px;">
+          <div class="modal-card" style="padding:24px; max-width:380px;">
             <button class="modal-close" id="btn-close-staff">✕</button>
-            <h3 style="font-size:1.1rem; font-weight:800; margin-bottom:12px;">🔐 Unlock Staff Portal</h3>
-            <select class="form-select" id="staff-role-select" style="margin-bottom:12px;">
-              <option value="kitchen">👨‍🍳 Kitchen Display (KDS)</option>
-              <option value="waiter">🏃 Floor Waiter Dispatch</option>
-              <option value="admin">📊 Manager Admin Dashboard</option>
-              <option value="qr">🔲 QR Standee Builder</option>
-            </select>
-            <input type="password" class="form-input" id="staff-pin-input" placeholder="Enter PIN (1234)" style="text-align:center; font-size:1.2rem; margin-bottom:12px;" />
-            <button class="btn-checkout" id="btn-submit-staff-pin">UNLOCK ➔</button>
+            <h3 style="font-size:1.2rem; font-weight:800; margin-bottom:4px; color:var(--text-main);">🔐 Staff Security Login</h3>
+            <p style="color:var(--text-muted); font-size:0.8rem; margin-bottom:16px;">Enter dedicated security PIN for access</p>
+            
+            <div class="form-group">
+              <label class="form-label">Role:</label>
+              <select class="form-select" id="staff-role-select">
+                <option value="admin" ${selectedRole === 'admin' ? 'selected' : ''}>📊 Manager Admin (PIN: 1234)</option>
+                <option value="kitchen" ${selectedRole === 'kitchen' ? 'selected' : ''}>👨‍🍳 Kitchen Display (PIN: 5678)</option>
+                <option value="waiter" ${selectedRole === 'waiter' ? 'selected' : ''}>🏃 Floor Waiter Dispatch (PIN: 9012)</option>
+                <option value="qr" ${selectedRole === 'qr' ? 'selected' : ''}>🔲 QR Standee Builder (PIN: 1234)</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">Security PIN:</label>
+              <input type="password" class="form-input" id="staff-pin-input" placeholder="Enter Security PIN" style="text-align:center; font-size:1.2rem; letter-spacing:4px;" autofocus />
+            </div>
+
+            <button class="btn-checkout" id="btn-submit-staff-pin">UNLOCK ACCESS ➔</button>
           </div>
         </div>
       `;
@@ -1003,6 +1113,14 @@
     function renderReservationModal() { return `<div></div>`; }
 
     function attachEventListeners() {
+      document.querySelectorAll('.btn-open-role-pin').forEach(btn => {
+        btn.onclick = () => {
+          state.preselectedRole = btn.dataset.role;
+          state.isStaffPinModalOpen = true;
+          renderApp();
+        };
+      });
+
       const btnOpenStaff = document.getElementById('btn-open-staff-modal');
       if (btnOpenStaff) btnOpenStaff.onclick = () => { state.isStaffPinModalOpen = true; renderApp(); };
 
@@ -1011,13 +1129,27 @@
 
       const btnSubmitStaffPin = document.getElementById('btn-submit-staff-pin');
       if (btnSubmitStaffPin) {
-        btnSubmitStaffPin.onclick = () => {
+        const handlePin = () => {
           const pinVal = document.getElementById('staff-pin-input')?.value;
           const roleVal = document.getElementById('staff-role-select')?.value || 'admin';
-          if (pinVal === '1234') {
+          
+          let isValid = false;
+          if (roleVal === 'admin' && pinVal === '1234') isValid = true;
+          if (roleVal === 'kitchen' && pinVal === '5678') isValid = true;
+          if (roleVal === 'waiter' && pinVal === '9012') isValid = true;
+          if (roleVal === 'qr' && pinVal === '1234') isValid = true;
+
+          if (isValid) {
             window.location.href = `?mode=${roleVal}`;
-          } else { alert('Invalid PIN! Default is 1234'); }
+          } else {
+            const hints = { admin: '1234', kitchen: '5678', waiter: '9012', qr: '1234' };
+            showToast(`⚠️ Incorrect PIN for ${roleVal.toUpperCase()}! PIN is ${hints[roleVal]}`);
+          }
         };
+
+        btnSubmitStaffPin.onclick = handlePin;
+        const pinInput = document.getElementById('staff-pin-input');
+        if (pinInput) pinInput.onkeydown = (e) => { if (e.key === 'Enter') handlePin(); };
       }
 
       const btnOpenWaiterCall = document.getElementById('btn-open-waiter-call');
@@ -1045,7 +1177,7 @@
           state.isWaiterModalOpen = false;
           saveState();
           sendCloudEvent('SERVICE_REQUEST', { tableName: state.currentTable.name, requestType: reqType });
-          alert(`🔔 Server notified! A waiter will bring ${reqType} to ${state.currentTable.name} shortly.`);
+          showToast(`🔔 Server notified! ${reqType} requested for ${state.currentTable.name.split('-')[0]}.`);
           renderApp();
         };
       });
@@ -1057,6 +1189,7 @@
           if (req) {
             req.status = 'Served';
             saveState();
+            showToast(`Served ✓ (${req.tableName.split('-')[0]})`);
             renderApp();
           }
         };
@@ -1093,7 +1226,7 @@
           state.isCartOpen = false;
           saveState();
           sendCloudEvent('NEW_ORDER', newOrder);
-          alert(`🎉 Order #${newOrder.id} placed for ${state.currentTable.name}!`);
+          showToast(`🎉 Order #${newOrder.id} placed for ${state.currentTable.name.split('-')[0]}!`);
           renderApp();
         };
       }
@@ -1185,7 +1318,7 @@
             const tbl = state.tables.find(t => t.id === targetTableId);
             if (tbl) { tbl.status = 'Available'; tbl.reservedFor = null; }
             saveState();
-            alert(`💳 Consolidated bill of ${state.brandConfig.currency}${totalPaid} marked as PAID for ${tbl ? tbl.name : 'Table'}! Session cleared.`);
+            showToast(`💳 Bill of ${state.brandConfig.currency}${totalPaid} marked as PAID for ${tbl ? tbl.name.split('-')[0] : 'Table'}!`);
             renderApp();
           }
         };
@@ -1199,6 +1332,7 @@
             item.isAvailable = !(item.isAvailable !== false);
             saveState();
             sendCloudEvent('MENU_STOCK_UPDATE', { itemId, isAvailable: item.isAvailable });
+            showToast(item.isAvailable ? `🟢 ${item.name} is now AVAILABLE` : `🔴 ${item.name} marked UNAVAILABLE`);
             renderApp();
           }
         };
@@ -1243,7 +1377,7 @@
             state.ratings = [];
             state.tables.forEach(t => { t.status = 'Available'; t.reservedFor = null; t.reservationTime = null; });
             saveState();
-            alert('✨ All demo data cleared! Your system is now 100% fresh & clean.');
+            showToast('✨ All demo data cleared! System is 100% fresh.');
             renderApp();
           }
         };
