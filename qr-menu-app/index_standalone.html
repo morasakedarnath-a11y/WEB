@@ -482,8 +482,11 @@
               if (order) {
                 order.status = msg.payload.nextStatus;
                 saveState(); renderApp();
-                if (state.mode !== 'customer' || order.tableId === state.currentTable.id) {
+                const isMyTable = (order.tableId === state.currentTable.id);
+                if (state.mode !== 'customer') {
                   showToast(`⚡ Order #${order.id} status: ${order.status}`);
+                } else if (isMyTable) {
+                  showToast(`🔥 Your Order #${order.id} is now ${order.status}!`, true);
                 }
               }
             } else if (msg.type === 'SERVICE_REQUEST') {
@@ -532,8 +535,8 @@
       state.activeOrder = tableOrders.length > 0 ? tableOrders[tableOrders.length - 1] : null;
     }
 
-    function showToast(msg) {
-      if (state && state.mode === 'customer') return; // Silence all popups for customers completely
+    function showToast(msg, isCustomerAllowed = false) {
+      if (state && state.mode === 'customer' && !isCustomerAllowed) return; // Allow customer popups ONLY for their own order!
       let toast = document.getElementById('toast-notification');
       if (!toast) {
         toast = document.createElement('div');
@@ -1355,7 +1358,7 @@
           state.isWaiterModalOpen = false;
           saveState();
           sendCloudEvent('SERVICE_REQUEST', { tableName: state.currentTable.name, requestType: reqType });
-          showToast(`🔔 Server notified! ${reqType} requested for ${state.currentTable.name.split('-')[0]}.`);
+          showToast(`🔔 Server notified! ${reqType} requested for ${state.currentTable.name.split('-')[0]}.`, true);
           renderApp();
         };
       });
@@ -1404,7 +1407,7 @@
           state.isCartOpen = false;
           saveState();
           sendCloudEvent('NEW_ORDER', newOrder);
-          showToast(`🎉 Order #${newOrder.id} placed for ${state.currentTable.name.split('-')[0]}!`);
+          showToast(`🎉 Order #${newOrder.id} placed for ${state.currentTable.name.split('-')[0]}!`, true);
           renderApp();
         };
       }
