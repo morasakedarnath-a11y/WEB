@@ -259,6 +259,12 @@ const paramTableId = parseInt(urlParams.get('table')) || null;
 let rawMode = urlParams.get('mode') || (paramTableId ? 'customer' : 'customer');
 if (rawMode === 'staff' || rawMode === 'kds') rawMode = 'kitchen';
 
+// Any "admin" related portal (Manager Admin, Kitchen Display, Waiter Dispatch) is
+// gated behind a password login screen — even when the page is opened directly
+// via a bookmarked / shared URL like ?mode=admin.
+const STAFF_MODES = ['admin', 'kitchen', 'waiter'];
+const STAFF_ACCESS_PASSWORD = '1234';
+
 // Initial State defaults
 let state = {
   mode: rawMode, // 'customer' | 'kitchen' | 'waiter' | 'admin'
@@ -288,6 +294,10 @@ let state = {
   isStaffPinModalOpen: false,
   isReservationModalOpen: false,
   selectedTableForReservation: null,
+  // Gate for direct-URL access to any admin/staff portal — must be re-entered
+  // for every fresh browser session, even if the URL is bookmarked.
+  staffAuthenticated: sessionStorage.getItem('ttp_staff_auth') === 'true',
+  staffLoginError: false,
   staffPinInput: '',
   activeOrder: null,
   qrConfig: {
@@ -561,6 +571,15 @@ function renderApp() {
   const appContainer = document.getElementById('app');
   if (!appContainer) return;
 
+  // --- ADMIN / STAFF LOGIN GATE ---
+  // Block every admin-related page (Admin, Kitchen, Waiter) behind a password
+  // screen, regardless of how it was reached (nav button OR a direct URL).
+  if (STAFF_MODES.includes(state.mode) && !state.staffAuthenticated) {
+    appContainer.innerHTML = renderStaffLoginGate();
+    attachEventListeners();
+    return;
+  }
+
   const cartCount = state.cart.reduce((sum, item) => sum + item.qty, 0);
   const cartSubtotal = state.cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
 
@@ -644,6 +663,12 @@ function renderHeader() {
           <div style="display:flex; align-items:center; gap:12px;">
             <span style="font-weight:800; font-size:1rem; color:var(--primary);">🏃 WAITER MODE</span>
           </div>
+        ` : ''}
+
+        ${STAFF_MODES.includes(state.mode) ? `
+          <button class="btn-icon" id="btn-lock-customer" title="Lock & exit to customer menu">
+            🔒
+          </button>
         ` : ''}
 
         ${state.mode === 'admin' ? `
@@ -973,13 +998,14 @@ function renderItemModal(item) {
 
 // --- KITCHEN DISPLAY SYSTEM (KDS) & WAITER DISPATCH VIEW ---
 function renderKDSView() {
-  const newOrders = state.orders.filter(o => o.status === 'Received');
-  const preppingOrders = state.orders.filter(o => o.status === 'Preparing');
-  const readyOrders = state.orders.filter(o => o.status === 'Ready');
+  // "Preparing" and "Ready for Waiter" columns have been removed — the kitchen
+  // now marks a New Order directly as ready for the waiter to pick up.
+  const newOrders = state.orders.filter(o => o.status === 'Received' || o.status === 'Preparing');
   const deliveredOrders = state.orders.filter(o => o.status === 'Delivered');
+  const readyOrders = state.orders.filter(o => o.status === 'Ready');
 
   return `
-    <div style="margin-bottom:20px; display:flex; justify-content:space-between; align-items:center;">
+    <div style="margin-bottom:20px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px;">
       <div>
         <h2 style="font-size:1.5rem; font-weight:800;">👨‍🍳 Kitchen & Waiter Command Center</h2>
         <p style="color:var(--text-muted); font-size:0.9rem;">Real-time communication between Kitchen, Waiters, and Customers.</p>
@@ -994,45 +1020,33 @@ function renderKDSView() {
       </div>
     </div>
 
-    <div class="kds-board" style="grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));">
-      <div class="kds-column">
-        <div class="kds-col-header">
+    <div class="kds-board" style="grid-template-columns: 1fr; gap:28px;">
+      <div class="kds-column" style="padding:28px; min-height:260px;">
+        <div class="kds-col-header" style="font-size:1.4rem; padding-bottom:18px; margin-bottom:20px;">
           <span>📥 NEW ORDERS</span>
           <span>${newOrders.length}</span>
         </div>
-        ${newOrders.length === 0 ? '<p style="color:var(--text-muted); font-size:0.85rem;">No new orders</p>' : 
-          newOrders.map(order => renderKDSTicket(order, 'Start Prep ➔', 'Preparing')).join('')}
+        ${newOrders.length === 0 ? '<p style="color:var(--text-muted); font-size:1rem;">No new orders</p>' : `
+          <div style="display:grid; grid-template-columns:repeat(auto-fill, minmax(300px, 1fr)); gap:18px;">
+            ${newOrders.map(order => renderKDSTicket(order, 'Mark Ready for Waiter 🔔', 'Ready')).join('')}
+          </div>
+        `}
       </div>
 
-      <div class="kds-column">
-        <div class="kds-col-header" style="border-color:#F59E0B;">
-          <span>🔥 PREPARING</span>
-          <span>${preppingOrders.length}</span>
-        </div>
-        ${preppingOrders.length === 0 ? '<p style="color:var(--text-muted); font-size:0.85rem;">Nothing cooking</p>' : 
-          preppingOrders.map(order => renderKDSTicket(order, 'Mark Ready for Waiter 🔔', 'Ready')).join('')}
-      </div>
-
-      <div class="kds-column" style="background:rgba(245,158,11,0.08); border-color:var(--primary);">
-        <div class="kds-col-header" style="border-color:#10B981; color:var(--primary);">
-          <span>🔔 READY FOR WAITER</span>
-          <span>${readyOrders.length}</span>
-        </div>
-        ${readyOrders.length === 0 ? '<p style="color:var(--text-muted); font-size:0.85rem;">No items ready for pickup</p>' : 
-          readyOrders.map(order => renderKDSTicket(order, 'Deliver to Table 🏃', 'Delivered', true)).join('')}
-      </div>
-
-      <div class="kds-column">
-        <div class="kds-col-header" style="border-color:var(--text-muted); color:var(--text-muted);">
+      <div class="kds-column" style="padding:28px; min-height:260px;">
+        <div class="kds-col-header" style="font-size:1.4rem; padding-bottom:18px; margin-bottom:20px; border-color:var(--text-muted); color:var(--text-muted);">
           <span>🎉 SERVED (${deliveredOrders.length})</span>
         </div>
-        ${deliveredOrders.length === 0 ? '<p style="color:var(--text-muted); font-size:0.85rem;">No completed orders</p>' : 
-          deliveredOrders.slice(-3).map(order => `
-            <div class="ticket-card" style="opacity:0.7;">
-              <div style="font-weight:700; font-size:0.85rem;">Order #${order.id} • ${order.tableName}</div>
-              <div style="font-size:0.75rem; color:var(--accent-green); margin-top:2px;">Delivered ✓</div>
-            </div>
-          `).join('')}
+        ${deliveredOrders.length === 0 ? '<p style="color:var(--text-muted); font-size:1rem;">No completed orders</p>' : `
+          <div style="display:grid; grid-template-columns:repeat(auto-fill, minmax(280px, 1fr)); gap:16px;">
+            ${deliveredOrders.slice(-9).reverse().map(order => `
+              <div class="ticket-card" style="opacity:0.8; padding:18px;">
+                <div style="font-weight:700; font-size:1rem;">Order #${order.id} • ${order.tableName}</div>
+                <div style="font-size:0.85rem; color:var(--accent-green); margin-top:4px;">Delivered ✓</div>
+              </div>
+            `).join('')}
+          </div>
+        `}
       </div>
     </div>
   `;
@@ -1127,6 +1141,11 @@ function renderWaiterDispatchView() {
             <button class="btn-status btn-update-order-status" data-order-id="${order.id}" data-next-status="Delivered" style="padding:12px; font-size:1rem; background:linear-gradient(135deg, var(--accent-green), #059669); color:#fff; box-shadow:0 4px 15px rgba(16,185,129,0.4);">
               DELIVERED TO ${order.tableName.split('-')[0].toUpperCase()} ✓
             </button>
+          </div>
+        `).join('')}
+      </div>
+    `}
+
     <h3 style="font-size:1.2rem; font-weight:800; margin-top:24px; margin-bottom:14px; color:#fff;">
       💳 TABLE CHECKOUT & BILL SETTLEMENT
     </h3>
@@ -1547,6 +1566,55 @@ function renderQRView() {
             <div style="margin-top:4px;">No App Install Needed • Scan to Order Food</div>
           </div>
         </div>
+      </div>
+    </div>
+  `;
+}
+
+// --- ADMIN / STAFF LOGIN PAGE (full-page gate for direct URL access) ---
+function renderStaffLoginGate() {
+  const portalLabel = {
+    admin: { title: 'Manager Admin Command Center', icon: '📊' },
+    kitchen: { title: 'Kitchen Display System (KDS)', icon: '👨‍🍳' },
+    waiter: { title: 'Floor Waiter Dispatch', icon: '🏃' }
+  }[state.mode] || { title: 'Staff Portal', icon: '🔐' };
+
+  return `
+    <div style="min-height:100vh; display:flex; align-items:center; justify-content:center; padding:20px; background:var(--bg-dark);">
+      <div style="width:100%; max-width:400px; background:var(--bg-card); border:1px solid var(--border); border-radius:var(--radius-lg); padding:32px; box-shadow:var(--shadow);">
+        <div style="text-align:center; margin-bottom:22px;">
+          <div style="font-size:2.6rem; margin-bottom:8px;">${portalLabel.icon}</div>
+          <h2 style="font-size:1.3rem; font-weight:800; color:#fff;">${portalLabel.title}</h2>
+          <p style="color:var(--text-muted); font-size:0.85rem; margin-top:6px;">
+            This page is restricted. Enter the staff password to continue.
+          </p>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Password</label>
+          <input
+            type="password"
+            class="form-input"
+            id="staff-login-password-input"
+            placeholder="Enter password"
+            autofocus
+            style="font-size:1.2rem; text-align:center; letter-spacing:4px;"
+          />
+        </div>
+
+        ${state.staffLoginError ? `
+          <p style="color:var(--accent-red); font-size:0.85rem; font-weight:700; margin-top:10px; text-align:center;">
+            ❌ Incorrect password. Please try again.
+          </p>
+        ` : ''}
+
+        <button class="btn-checkout" id="btn-staff-login-submit" style="margin-top:18px;">
+          UNLOCK 🔓
+        </button>
+
+        <button class="btn-add" id="btn-staff-login-cancel" style="width:100%; margin-top:10px; justify-content:center;">
+          ← Back to Customer Menu
+        </button>
       </div>
     </div>
   `;
@@ -2039,7 +2107,45 @@ function attachEventListeners() {
     btnLockCustomer.onclick = () => {
       state.mode = 'customer';
       state.activeView = 'menu';
+      state.staffAuthenticated = false;
+      sessionStorage.removeItem('ttp_staff_auth');
+      const url = new URL(window.location.href);
+      url.searchParams.delete('mode');
+      window.history.replaceState({}, '', url);
       renderApp();
+    };
+  }
+
+  // --- Admin/Staff Login Gate Listeners ---
+  const btnStaffLoginSubmit = document.getElementById('btn-staff-login-submit');
+  if (btnStaffLoginSubmit) {
+    const handleStaffLogin = () => {
+      const pwdVal = document.getElementById('staff-login-password-input')?.value || '';
+      if (pwdVal === STAFF_ACCESS_PASSWORD) {
+        state.staffAuthenticated = true;
+        state.staffLoginError = false;
+        sessionStorage.setItem('ttp_staff_auth', 'true');
+        renderApp();
+      } else {
+        state.staffLoginError = true;
+        renderApp();
+      }
+    };
+
+    btnStaffLoginSubmit.onclick = handleStaffLogin;
+    const staffLoginInput = document.getElementById('staff-login-password-input');
+    if (staffLoginInput) {
+      staffLoginInput.onkeydown = (e) => { if (e.key === 'Enter') handleStaffLogin(); };
+      staffLoginInput.focus();
+    }
+  }
+
+  const btnStaffLoginCancel = document.getElementById('btn-staff-login-cancel');
+  if (btnStaffLoginCancel) {
+    btnStaffLoginCancel.onclick = () => {
+      const url = new URL(window.location.href);
+      url.searchParams.delete('mode');
+      window.location.href = url.toString();
     };
   }
 
