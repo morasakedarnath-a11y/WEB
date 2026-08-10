@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "name": "luca-cafe",
+  "rewrites": [
+    {
+      "source": "/(.*)",
+      "destination": "/index.html"
+    }
+  ]
+}
